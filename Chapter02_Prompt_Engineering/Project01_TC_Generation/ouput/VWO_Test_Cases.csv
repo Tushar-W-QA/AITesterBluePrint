@@ -1,0 +1,13 @@
+Test Case ID,Test Case Title,Preconditions,Test Steps,Expected Result,Actual Result,Priority,Test Type,Feature / Module,Severity,Status,Executed QA Name,Is Automated
+TC-VWO-001,"Verify successful login with valid email and password","User account exists in VWO with valid credentials","1. Navigate to app.vwo.com/login
+2. Enter valid registered email address in email field
+3. Enter valid corresponding password in password field
+4. Click Sign in button","User is redirected to VWO main dashboard. Session is established.","","P1","Functional - Positive","Authentication - Login","Critical","Not Executed","","No"
+TC-VWO-002,"Verify login fails with invalid password","User account exists in VWO with valid email","1. Navigate to app.vwo.com/login
+2. Enter valid registered email address
+3. Enter incorrect password
+4. Click Sign in button","Error message displayed: Invalid email or password. User remains on login page.","","P1","Functional - Negative","Authentication - Login","High","Not Executed","","No"
+TC-VWO-003,"Verify login fails with unregistered email","User does NOT have a VWO account","1. Navigate to app.vwo.com/login
+2. Enter email address not registered with VWO
+3. Enter any password
+4. Click Sign in button","Error message displayed: Invalid email or password. User remains on login page.","","P1","Functional - Negative","Authentication - Login","High","Not Executed","","No"
