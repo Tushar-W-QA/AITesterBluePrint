@@ -1,0 +1,30 @@
+{
+  "name": "playwright-api-automation-framework",
+  "version": "1.0.0",
+  "description": "Enterprise-grade Playwright API Automation Framework for Restful Booker API",
+  "main": "dist/BookingApi.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "playwright",
+    "api",
+    "automation",
+    "testing",
+    "typescript"
+  ],
+  "author": "QA Automation Architect",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.4.0",
+    "rimraf": "^5.0.0"
+  }
+}
