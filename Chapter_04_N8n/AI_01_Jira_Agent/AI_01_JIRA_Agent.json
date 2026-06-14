@@ -1,0 +1,165 @@
+{
+  "name": "AI_01_JIRA_Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi, I'm QAMentor",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -256,
+        -16
+      ],
+      "id": "28ab4a14-f19c-427f-a867-6924036fb095",
+      "name": "When chat message received",
+      "webhookId": "388e3cc0-218a-4979-9e36-c7311cab915d"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "If you have 15 years of experience of keyword automation software, your task will be to create the Jira ticket and you will get the description from the chat box."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "62485c17-f90a-4fcf-8a0f-625ba8803072",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        192
+      ],
+      "id": "3c2dae91-e757-4082-9a53-d4222c47fe77",
+      "name": "Qwen_Brain",
+      "credentials": {
+        "groqApi": {
+          "id": "3qOyi8wf0zPdHToN",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        208
+      ],
+      "id": "47a29560-1bb5-46ad-beea-939150608d83",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "issueType": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Bug"
+        },
+        "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        160,
+        160
+      ],
+      "id": "651798c9-6377-40e9-84cc-b1a24bbba1df",
+      "name": "Create an issue in Jira Software",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "IInapuFlIl210XBp",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen_Brain": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an issue in Jira Software": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1bd9bc85-f96d-417d-844d-c96cf190bb2f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51b319e563d1ebf836a48af7f6bd583365f65ae96e4703188ea727b5d3343668"
+  },
+  "nodeGroups": [],
+  "id": "7YptbtmImFS29Dxp",
+  "tags": [
+    {
+      "updatedAt": "2026-06-13T11:39:25.304Z",
+      "createdAt": "2026-06-13T11:39:25.304Z",
+      "id": "xiVh5RiQnnTfRSLZ",
+      "name": "AI"
+    }
+  ]
+}

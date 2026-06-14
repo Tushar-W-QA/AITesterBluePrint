@@ -1,0 +1,138 @@
+{
+  "name": "AI_06_Failed_Test_Case_Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Objective \nSend an email notification whenever an automated **Test case fails**.",
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "906912da-7cd4-46f1-93dd-9b70013d957e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "test-failure-alert",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        16
+      ],
+      "id": "3a0922ba-ba1f-487d-aba4-276c85f5669b",
+      "name": "Webhook",
+      "webhookId": "7461e9d4-9d2e-4bd6-81dd-de50fc5b7f2c"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d579c6a8-9855-4216-ae6b-113ea3d2dba5",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        16
+      ],
+      "id": "d988b827-93b2-43df-bc7a-d9b0a492b48f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "tusharwarad2929@gmail.com",
+        "subject": "🚨 Test Case Failed Alert",
+        "message": "=Test Name: {{ $json.testName }}\nStatus: {{ $json.status }}\nReason: {{ $json.reason }}\nTime: {{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -80
+      ],
+      "id": "e05c1c63-0b1f-4924-87e2-2a1db4438edc",
+      "name": "Send a message",
+      "webhookId": "f7799171-4a50-4d80-99cb-655700eb476b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "M7NOzt3SHGz8wSDj",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f57db927-aec6-4c57-b123-6a8be7bebd4e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51b319e563d1ebf836a48af7f6bd583365f65ae96e4703188ea727b5d3343668"
+  },
+  "nodeGroups": [],
+  "id": "BtB0AdQXpod0Rw1e",
+  "tags": [
+    {
+      "updatedAt": "2026-06-13T11:39:25.304Z",
+      "createdAt": "2026-06-13T11:39:25.304Z",
+      "id": "xiVh5RiQnnTfRSLZ",
+      "name": "AI"
+    }
+  ]
+}

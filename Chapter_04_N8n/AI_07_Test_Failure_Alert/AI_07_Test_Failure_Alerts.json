@@ -1,0 +1,124 @@
+{
+  "name": "AI_07_Test_Failure_Alerts",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "test-fail-result",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        80
+      ],
+      "id": "52f568da-bea3-4063-b0da-e6562edc64e8",
+      "name": "Webhook",
+      "webhookId": "d1d73784-571e-4123-9a7d-398544a36da8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "18bf07ea-52ac-4e3e-a347-61eb47c07960",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        80
+      ],
+      "id": "6f590423-4b7e-41d1-b450-da74cc1876db",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "tusharwarad2929@gmail.com",
+        "subject": "🚨 Test Case Failed Alert",
+        "message": "=Test Name: {{ $json.testName }}\nResult: {{ $json.result }}\nReason For Failure: {{ $json.reasonForFailure }}\nExecution Time: {{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        -16
+      ],
+      "id": "88595453-e35d-40e5-ad49-7d2d801da33b",
+      "name": "Send a message",
+      "webhookId": "cd2d20f3-9ae0-4ff6-8acf-0f2df98e7dad",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "M7NOzt3SHGz8wSDj",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "59b52a57-3a69-4807-9a33-1affe4fde70f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51b319e563d1ebf836a48af7f6bd583365f65ae96e4703188ea727b5d3343668"
+  },
+  "nodeGroups": [],
+  "id": "G0oxVOJjI9osVmeN",
+  "tags": [
+    {
+      "updatedAt": "2026-06-13T11:39:25.304Z",
+      "createdAt": "2026-06-13T11:39:25.304Z",
+      "id": "xiVh5RiQnnTfRSLZ",
+      "name": "AI"
+    }
+  ]
+}
