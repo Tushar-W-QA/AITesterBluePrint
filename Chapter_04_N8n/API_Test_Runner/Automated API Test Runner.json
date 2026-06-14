@@ -1,0 +1,275 @@
+{
+  "name": "Automated API Test Runner",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Objective ##\nAutomatically Call The API, Validate the response and send a test execution report via email",
+        "height": 176,
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "6a1a167d-79b7-47a6-8db1-03a71f7855ad",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -416,
+        320
+      ],
+      "id": "58b67115-4b6a-497d-956f-627294fb2598",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts/3",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -208,
+        320
+      ],
+      "id": "30b273c9-706c-4903-8964-084ab9c3c074",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "68f62267-8a2f-4427-94e1-b4675feb48b8",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "fc2e3c32-8826-4793-be3e-a4a2622d5e08",
+              "leftValue": "={{ $json.body.id }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "902c3dab-bee5-4adf-8cad-822b0dd31204",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "f0b31035-3124-4bdc-b2ea-91f19b1c0d7f",
+              "leftValue": "={{ $json.body.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        48,
+        176
+      ],
+      "id": "7b2d1dfb-beb1-4604-a405-0193efc40949",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cb9fb9b3-7893-40bd-ac6a-0ecf54e69f9b",
+              "name": "Test Name",
+              "value": "Get API Test ",
+              "type": "string"
+            },
+            {
+              "id": "805aa652-20f9-4d2a-be94-d8dac712c389",
+              "name": "Status",
+              "value": "Passed",
+              "type": "string"
+            },
+            {
+              "id": "ac135dfe-f340-49c0-bfb9-ca9a05bdc43d",
+              "name": "Time",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "5cad473a-e045-493a-927f-3677bc3e933d",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        48
+      ],
+      "id": "f3047b2a-462d-4ccd-8dd4-45e802398c38",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "tusharwarad2929@gmail.com",
+        "subject": "API Test Execution Report",
+        "message": "=Test Name: Get API Test\nStatus: Passed\nTIme: {{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        96
+      ],
+      "id": "8b875830-8c58-4fa0-9edd-b6cf8bce210c",
+      "name": "Send a message",
+      "webhookId": "0b271004-6790-4147-9619-4a1787307e3d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "M7NOzt3SHGz8wSDj",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "tusharwarad2929@gmail.com",
+        "subject": "API Test Failed",
+        "message": "=API URL: https://jsonplaceholder.typicode.com/posts/1  Status Code: {{$json.statusCode}}  Execution Time: {{$now}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        352
+      ],
+      "id": "a27118a7-4a69-44f0-b598-a041a246ea2f",
+      "name": "Send a message1",
+      "webhookId": "257cfc44-dd2e-492e-8863-b69155bdd502",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "M7NOzt3SHGz8wSDj",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "344e2eff-cbb6-4417-b7b4-49953ea4a9a1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51b319e563d1ebf836a48af7f6bd583365f65ae96e4703188ea727b5d3343668"
+  },
+  "nodeGroups": [],
+  "id": "yNR0XQe1w5uhJ4vt",
+  "tags": []
+}

@@ -1,0 +1,149 @@
+{
+  "name": "Website_Uptime_Monitor",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c688583c-9032-4da7-815d-35d67498a786",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://google.com",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ed395bfe-4c30-4994-9b00-aeb9ac2ca83b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "sendTo": "tusharwarad2929@gmail.com",
+        "subject": "Website Down Alert",
+        "message": "=Website is down\n\nStatus code:\n{{ $json.statusCode }}\n\nTime:\n{{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        -64
+      ],
+      "id": "965dd29b-60db-44ce-937d-fa7cd86ee9ef",
+      "name": "Send a message",
+      "webhookId": "a5051958-df4f-4145-b5c0-11c76325fd97",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "M7NOzt3SHGz8wSDj",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b5e2f155-1d13-42ca-8c43-ff606300a26f",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "be8494a1-2d98-4eca-8f49-4a250a7c13f5",
+      "name": "IF"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f90399fa-1743-416d-9fec-ff76af52efb1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51b319e563d1ebf836a48af7f6bd583365f65ae96e4703188ea727b5d3343668"
+  },
+  "nodeGroups": [],
+  "id": "Cn6s57GylvLdLdKs",
+  "tags": []
+}
