@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment — NEVER commit these
+.env
+.env.local
+.env.*.local
+
+# Sensitive / generated
+content_calendar.xlsx
+.sheets-id-cache
+
+# Build artifacts
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
